@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+
+interface DraggableProps {
+  rotation: number;
+}
+
+function Draggable({ rotation }: DraggableProps) {
+  return <div className="draggable">{rotation}</div>;
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((r) => (
+        <div style={{ marginBottom: "2rem" }} key={r}>
+          <Draggable rotation={r} />
+        </div>
+      ))}
     </div>
   );
 }
