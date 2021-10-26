@@ -1,4 +1,4 @@
-import React from "react";
+import { DndContext, useDraggable } from "@dnd-kit/core";
 import "./App.css";
 
 interface DraggableProps {
@@ -6,17 +6,45 @@ interface DraggableProps {
 }
 
 function Draggable({ rotation }: DraggableProps) {
-  return <div className="draggable">{rotation}</div>;
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform: _transform,
+  } = useDraggable({
+    id: rotation.toString(),
+  });
+
+  const transform = _transform ?? { x: 0, y: 0 };
+
+  const style = {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0) rotate(${rotation}deg)`,
+    touchAction: "none",
+  };
+
+  return (
+    <div
+      className="draggable"
+      style={style}
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
+    >
+      {rotation}
+    </div>
+  );
 }
 
 function App() {
   return (
     <div className="App">
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((r) => (
-        <div style={{ marginBottom: "2rem" }} key={r}>
-          <Draggable rotation={r} />
-        </div>
-      ))}
+      <DndContext>
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((r) => (
+          <div style={{ marginBottom: "2rem" }} key={r}>
+            <Draggable rotation={r} />
+          </div>
+        ))}
+      </DndContext>
     </div>
   );
 }
